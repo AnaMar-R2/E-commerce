@@ -258,9 +258,6 @@ async function main() {
     printTotal(db)
     handleTotal(db)
     handlePrintAmountProducts(db)
-
-
-
 }
 
 main();

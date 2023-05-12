@@ -118,14 +118,14 @@ function printProductsInCart(db) {
                     <img src="${image}" alt="imagen" />
                 </div>
                 <div class="cart__product--body">
-                    <h4>${name}</h4>
-                    <p>Stock: ${quantity} | <span>$${price}.00</span></p>
+                    <h4 class="cart__product--body-h4">${name}</h4>
+                    <p class="cart__product--body-p">Stock: ${quantity} | <span>$${price}.00</span></p>
                     <span>Subtotal: $${price*amount}</span>
                     <div class="cart__product--body--op" id="${id}">
-                        <i class="bx bx-minus"></i>
-                        <p>${amount} units</p>
-                        <i class="bx bx-plus"></i>
-                        <i class="bx bx-trash-alt"></i>
+                        <i class="bx bx-minus cart__product--body-h4"></i>
+                        <p class="cart__product--body-h4" >${amount} units</p>
+                        <i class="bx bx-plus cart__product--body-h4"></i>
+                        <i class="bx bx-trash-alt cart__product--body-h4"></i>
                     </div>
                 </div>
             </div>
@@ -230,6 +230,19 @@ function handlePrintAmountProducts(db) {
 
     amountProducts.textContent = amount
 }
+function darkModo() {
+    const iconDarkMode = document.querySelector(".bx-moon")
+    const bodyDarkmode = document.querySelector(".body")
+
+    iconDarkMode.addEventListener("click", () => bodyDarkmode.classList.toggle("dark-theme"));
+}
+function loading() {
+    const load = document.querySelector(".loading")
+
+    setTimeout(() => {
+        load.classList.toggle("loading2")
+    }, 2000);
+}
 
 async function main() {
     const db = {
@@ -238,15 +251,6 @@ async function main() {
             await getProducts(),
         cart: JSON.parse(window.localStorage.getItem("cart")) || {}
     }        
-
-    mixitup(".products", {
-        selectors: {
-            target: '.product'
-        },
-        animation: {
-            duration: 300
-        }
-    });
 
     printProducts (db)
     showCart()
@@ -258,6 +262,19 @@ async function main() {
     printTotal(db)
     handleTotal(db)
     handlePrintAmountProducts(db)
+    darkModo()
+    loading()
+
+    mixitup(".products", {
+        selectors: {
+            target: '.product'
+        },
+        animation: {
+            duration: 300
+        }
+    });
+
+
 }
 
 main();

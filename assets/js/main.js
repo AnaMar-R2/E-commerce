@@ -27,12 +27,19 @@ function printProducts(db) {
 
             <div class="product__info">
                 <div class="product__info-priceStock">
-                    <h4>$${product.price}</h4> 
-                    <span><b>Stock: ${product.quantity} </b></span>
+                    <h4>$${product.price}.00</h4> 
+                    ${product.quantity
+                        ? `<span><b>Stock: ${product.quantity} </b></span>`
+                        : `<p class='soldOut'> Sold out</p>`
+                    }
+                    
                 </div>
                 <h5 class="product__info-h5">${product.name}  </h5>
                 <div class="product__info-plus">
-                    <i class='bx bx-plus' id='${product.id}'></i>
+                    ${product.quantity
+                        ? `<i class='bx bx-plus' id='${product.id}'></i>`
+                        : ` `
+                    }
                 </div>
             </div> 
         </div>
@@ -41,7 +48,6 @@ function printProducts(db) {
 
     productsHTML.innerHTML = html
 }
-
 async function showMenu() {
     const iconClose= document.querySelector(".x-menu")
     const iconShowMenu = document.querySelector(".bxs-dashboard")
@@ -95,6 +101,7 @@ function addToCartFromProducts(db) {
             window.localStorage.setItem("cart", JSON.stringify(db.cart))
             printProductsInCart(db)
             printTotal(db)
+            handlePrintAmountProducts(db)
         }
     })
 }
@@ -160,6 +167,7 @@ function handleProductsInCart(db) {
         window.localStorage.setItem("cart", JSON.stringify(db.cart))
         printProductsInCart(db)
         printTotal(db)
+        handlePrintAmountProducts(db)
     })
 }
 function printTotal(db) {
@@ -179,33 +187,7 @@ function printTotal(db) {
     infoTotal.textContent = "$" + totalProducts + ".00"
     infoAmount.textContent = amountProducts + " items"
 }
-
-async function main() {
-    const db = {
-        products: 
-            JSON.parse(window.localStorage.getItem("products")) || 
-            await getProducts(),
-        cart: JSON.parse(window.localStorage.getItem("cart")) || {}
-    }        
-
-    mixitup(".products", {
-        selectors: {
-            target: '.product'
-        },
-        animation: {
-            duration: 300
-        }
-    });
-
-    printProducts (db)
-    showCart()
-    showMenu()
-    navScroll()
-    addToCartFromProducts(db)
-    printProductsInCart(db)
-    handleProductsInCart(db)
-    printTotal(db)
-
+function handleTotal(db) {
     const btnBuy = document.querySelector(".btn__buy")
     btnBuy.addEventListener("click", function () {
         if (!Object.values(db.cart).length) return alert("el carrito se encuentra vacio")
@@ -234,7 +216,49 @@ async function main() {
         printTotal(db)
         printProductsInCart(db)
         printProducts (db)
+        handlePrintAmountProducts(db)
     })
+}
+function handlePrintAmountProducts(db) {
+    const amountProducts = document.querySelector(".amountProducts")
+
+    let amount = 0
+
+    for (const product in db.cart) {
+        amount += db.cart[product].amount
+    }
+
+    amountProducts.textContent = amount
+}
+
+async function main() {
+    const db = {
+        products: 
+            JSON.parse(window.localStorage.getItem("products")) || 
+            await getProducts(),
+        cart: JSON.parse(window.localStorage.getItem("cart")) || {}
+    }        
+
+    mixitup(".products", {
+        selectors: {
+            target: '.product'
+        },
+        animation: {
+            duration: 300
+        }
+    });
+
+    printProducts (db)
+    showCart()
+    showMenu()
+    navScroll()
+    addToCartFromProducts(db)
+    printProductsInCart(db)
+    handleProductsInCart(db)
+    printTotal(db)
+    handleTotal(db)
+    handlePrintAmountProducts(db)
+
 
 
 }

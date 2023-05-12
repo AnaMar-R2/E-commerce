@@ -96,6 +96,23 @@ a{
     cursor: pointer;
     font-size: 1.3rem;
 }
+.bx-shopping-bag{
+    position: relative;
+}
+.amountProducts{
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    background-color: var(--button-color);
+    color: var(--container-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: -5px;
+    bottom: -10px;
+}
 
 /* **maquetacion de menu** */
 
@@ -233,6 +250,14 @@ a{
 .product__info span { 
     color: var(--text-color-light);
     font-weight: normal;
+    font-size: 0.8rem;
+}
+.soldOut{
+    background-color: var(--first-color);
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    color: var(--button-color);
+    font-weight: 700;
     font-size: 0.8rem;
 }
 .product__info-h5{
